@@ -22,7 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-#Unecessary File
-tianqi-saito-app
-l-custom-react
