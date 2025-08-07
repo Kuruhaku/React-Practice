@@ -16,7 +16,7 @@ export function Main() {
 
   // Check if going to show the recipe or not
   async function showRecipe() {
-    console.log(JSON.stringify(ingredients));
+    // Posting the ingredients to the server.
     try {
       const response = await fetch("http://localhost:8080/api/getRecipe", {
         method: "POST",
@@ -26,14 +26,23 @@ export function Main() {
         body: JSON.stringify({ ingredients: ingredients }),
       });
 
+      // Wait for the response recipe and set it to recipeText.
       const data = await response.json();
       setRecipeText(data.recipe);
     } catch (err) {
       console.error("Error fetching recipe:", err);
     }
 
+    // Will set always to true when setting.
     setShownRecipe(true);
   }
+
+  // If Using ai.js without backend.
+  // async function showRecipeWithoutDatabase() {
+  //   const recipe = await getRecipeFromMistral(ingredients);
+  //   setRecipeText(recipe);
+  //   setShownRecipe(true);
+  // }
 
   return (
     <main>
@@ -46,7 +55,6 @@ export function Main() {
         />
         <button>Add Ingredient</button>
       </form>
-
       {ingredients.length > 0 && (
         <IngredientsList ingredients={ingredients} showRecipe={showRecipe} />
       )}

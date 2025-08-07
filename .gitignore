@@ -22,8 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.env
 
 #Unecessary File
 tianqi-saito-app
 l-custom-react
-ai-chef-server

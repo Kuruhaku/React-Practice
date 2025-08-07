@@ -5,7 +5,7 @@ You are an assistant that receives a list of ingredients that a user has and sug
 `
 
 // for HF_ACCESS_TOKEN
-const hf = new HfInference("")
+const hf = new HfInference("") // Token Here
 
 export async function getRecipeFromMistral(ingredientsArr) {
   const ingredientsString = ingredientsArr.join(", ")
