@@ -1,12 +1,25 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ClaudeRecipe } from "./CaludeRecipe";
 import { IngredientsList } from "./IngredientsList";
 // import { getRecipeFromMistral } from "../../ai.js";
 
 export function Main() {
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState([
+    "chicken",
+    "all the main spices",
+    "corn",
+  ]);
   const [shownRecipe, setShownRecipe] = useState(false);
   const [recipeText, setRecipeText] = useState("");
+  const recipeSection = useRef(null);
+
+  useEffect(() => {
+    if (recipeText != "" && recipeSection.current != null) {
+      recipeSection.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [recipeText]);
+
+  console.log(recipeText);
 
   // Get input data and push it in the new state array.
   function handleSumbit(formData) {
@@ -37,13 +50,6 @@ export function Main() {
     setShownRecipe(true);
   }
 
-  // If Using ai.js without backend.
-  // async function showRecipeWithoutDatabase() {
-  //   const recipe = await getRecipeFromMistral(ingredients);
-  //   setRecipeText(recipe);
-  //   setShownRecipe(true);
-  // }
-
   return (
     <main>
       <form action={handleSumbit} className="add-ingredients-forms">
@@ -56,7 +62,11 @@ export function Main() {
         <button>Add Ingredient</button>
       </form>
       {ingredients.length > 0 && (
-        <IngredientsList ingredients={ingredients} showRecipe={showRecipe} />
+        <IngredientsList
+          ref={recipeSection}
+          ingredients={ingredients}
+          showRecipe={showRecipe}
+        />
       )}
       {shownRecipe && <ClaudeRecipe recipeText={recipeText} />}
     </main>
