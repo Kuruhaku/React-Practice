@@ -5,6 +5,12 @@ import clsx from "clsx";
 export default function App() {
   const [currentWord, setCurrentWord] = useState("REACT");
   const [guessLetter, setGuessLetter] = useState([]);
+
+  const wrongGuessCount = guessLetter.filter(
+    (i) => !currentWord.includes(i),
+  ).length;
+  console.log(wrongGuessCount);
+
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
   function addGuessLetter(letter) {
@@ -16,7 +22,7 @@ export default function App() {
   const languageElement = lagnuageData.map((life, index) => (
     <span
       key={index}
-      className={`rounded ${life.backgroundColor} text-[${life.color}] p-2`}
+      className={`relative rounded ${life.backgroundColor} text-[${life.color}] p-2 ${index < wrongGuessCount ? "before:absolute before:inset-0 before:flex before:items-center before:justify-center before:bg-black/70 before:text-[0.85rem]" : ""}`}
     >
       {life.name}
     </span>
