@@ -2,16 +2,30 @@ import lagnuageData from "../src/data/language.json";
 import { useState } from "react";
 import clsx from "clsx";
 
+/** Backlog:
+ * - Farewell message in the status section
+ * - Fix ally issues
+ * - Make the new game button work
+ * - Choose a random word form a list of word or api.
+ */
+
 export default function App() {
   const [currentWord, setCurrentWord] = useState("REACT");
   const [guessLetter, setGuessLetter] = useState([]);
+  const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
   const wrongGuessCount = guessLetter.filter(
     (i) => !currentWord.includes(i),
   ).length;
-  console.log(wrongGuessCount);
+  console.log(`Guessed Wrong: ${wrongGuessCount}`);
 
-  const alphabet = "abcdefghijklmnopqrstuvwxyz";
+  const isGameLost = wrongGuessCount == 8;
+
+  const isGameWon = [...currentWord].every((letter) =>
+    guessLetter.includes(letter),
+  );
+
+  const isGameOver = isGameWon || isGameLost;
 
   function addGuessLetter(letter) {
     setGuessLetter((prevLetter) =>
@@ -30,13 +44,12 @@ export default function App() {
 
   const wordDisplay = [...currentWord].map((letter, index) => {
     const correct = guessLetter.includes(letter.toUpperCase());
-    const displayClass = clsx(
-      "flex h-10 w-10 items-center justify-center border-b-2 border-white bg-[#323232] uppercase",
-      { "text-white": correct, "text-[#323232]": !correct },
-    );
     return (
-      <span key={index} className={displayClass}>
-        {letter}
+      <span
+        key={index}
+        className={`flex h-10 w-10 items-center justify-center border-b-2 border-white bg-[#323232] uppercase`}
+      >
+        {correct && letter}
       </span>
     );
   });
@@ -51,11 +64,10 @@ export default function App() {
         "pointer-events-none bg-[#10A95B]": isGuessed && isCorrect,
         "pointer-events-none bg-[#EC5D49]": isWrong,
         "bg-[#FCBA29]": !isGuessed,
+        "pointer-events-none": isGameOver,
         "col-start-3": index === 20,
       },
     );
-
-    console.log(buttonClass);
 
     return (
       <button
@@ -68,6 +80,28 @@ export default function App() {
     );
   });
 
+  function renderGameStatus() {
+    if (!isGameOver) {
+      null;
+    }
+
+    if (isGameWon) {
+      return (
+        <>
+          <h2>You win!</h2>
+          <p>Well Done!</p>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <h2>Game over!</h2>
+          <p>You Lose!</p>
+        </>
+      );
+    }
+  }
+
   return (
     <main>
       <header className="mb-8 text-center">
@@ -79,9 +113,16 @@ export default function App() {
         </p>
       </header>
 
-      <section className="mb-5 flex flex-col items-center rounded bg-[#10A95B] py-2 text-[#F9F4DA]">
-        <h2 className="text-xl">You Win!</h2>
-        <p className="text-base">Well done! 🎉</p>
+      <section
+        className={clsx(
+          "mb-8 flex flex-col items-center rounded py-2 text-[#F9F4DA]",
+          {
+            "bg-[#EC5D49]": isGameLost,
+            "bg-[#10A95B]": isGameWon,
+          },
+        )}
+      >
+        {renderGameStatus()}
       </section>
 
       <section className="prog-life mb-10 flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
@@ -96,9 +137,11 @@ export default function App() {
         {keyboard}
       </section>
 
-      <button className="mx-auto block w-50 cursor-pointer rounded border border-[#D7D7D7] bg-[#11B5E5] px-1.5 py-3">
-        New Game
-      </button>
+      {isGameOver && (
+        <button className="mx-auto block w-50 cursor-pointer rounded border border-[#D7D7D7] bg-[#11B5E5] px-1.5 py-3">
+          New Game
+        </button>
+      )}
     </main>
   );
 }
