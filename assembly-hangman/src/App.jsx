@@ -1,9 +1,9 @@
 import lagnuageData from "../src/data/language.json";
 import { useState } from "react";
 import clsx from "clsx";
+import { getFarewellText } from "./data/utils";
 
 /** Backlog:
- * - Farewell message in the status section
  * - Fix ally issues
  * - Make the new game button work
  * - Choose a random word form a list of word or api.
@@ -19,13 +19,14 @@ export default function App() {
   ).length;
   console.log(`Guessed Wrong: ${wrongGuessCount}`);
 
-  const isGameLost = wrongGuessCount == 8;
-
+  const isGameLost = wrongGuessCount >= lagnuageData.length - 1;
   const isGameWon = [...currentWord].every((letter) =>
     guessLetter.includes(letter),
   );
-
   const isGameOver = isGameWon || isGameLost;
+  const lastGuessedLetter = guessLetter[guessLetter.length - 1];
+  const isLastGuessIncorrect =
+    lastGuessedLetter && !currentWord.includes(lastGuessedLetter);
 
   function addGuessLetter(letter) {
     setGuessLetter((prevLetter) =>
@@ -81,8 +82,12 @@ export default function App() {
   });
 
   function renderGameStatus() {
-    if (!isGameOver) {
-      null;
+    if (!isGameOver && isLastGuessIncorrect) {
+      return (
+        <>
+          <h2>{getFarewellText(lagnuageData[wrongGuessCount - 1]?.name)}</h2>
+        </>
+      );
     }
 
     if (isGameWon) {
@@ -92,7 +97,9 @@ export default function App() {
           <p>Well Done!</p>
         </>
       );
-    } else {
+    }
+
+    if (isGameLost) {
       return (
         <>
           <h2>Game over!</h2>
@@ -115,10 +122,12 @@ export default function App() {
 
       <section
         className={clsx(
-          "mb-8 flex flex-col items-center rounded py-2 text-[#F9F4DA]",
+          "mb-8 flex min-h-16 flex-col items-center justify-center rounded py-2 text-[#F9F4DA]",
           {
-            "bg-[#EC5D49]": isGameLost,
             "bg-[#10A95B]": isGameWon,
+            "border border-dashed bg-violet-400 italic":
+              isLastGuessIncorrect && guessLetter.length > 0 && !isGameOver,
+            "bg-[#EC5D49]": isGameLost,
           },
         )}
       >
