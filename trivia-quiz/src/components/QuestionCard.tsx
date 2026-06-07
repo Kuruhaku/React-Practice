@@ -5,9 +5,7 @@ import type { TriviaQuestionProps } from "../types";
 
 export default function QuestionCard({ question }: TriviaQuestionProps) {
   const { incorrect_answers, correct_answer } = question;
-  console.log(question);
   const choices = [correct_answer, ...incorrect_answers];
-  console.log(choices);
 
   function shuffleArray(arr: string[]) {
     const newArray = [...arr];
@@ -16,6 +14,7 @@ export default function QuestionCard({ question }: TriviaQuestionProps) {
     for (let i = newArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+      console.log(newArray);
     }
 
     return newArray;
