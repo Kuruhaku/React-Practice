@@ -2,15 +2,13 @@ import lagnuageData from "../src/data/language.json";
 import { useState } from "react";
 import clsx from "clsx";
 import { getFarewellText } from "./data/utils";
-
-/** Backlog:
- * - Fix ally issues
- * - Make the new game button work
- * - Choose a random word form a list of word or api.
- */
+import { getRandomWord } from "./data/utils";
+import Confetti from "react-confetti";
 
 export default function App() {
-  const [currentWord, setCurrentWord] = useState("REACT");
+  const [currentWord, setCurrentWord] = useState(() =>
+    getRandomWord().toUpperCase(),
+  );
   const [guessLetter, setGuessLetter] = useState([]);
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
 
@@ -49,9 +47,9 @@ export default function App() {
     return (
       <span
         key={index}
-        className={`flex h-10 w-10 items-center justify-center border-b-2 border-white bg-[#323232] uppercase`}
+        className={`flex h-10 w-10 items-center justify-center border-b-2 border-white uppercase ${!correct && isGameLost ? "bg-[#EC5D49]" : "bg-[#323232]"}`}
       >
-        {correct && letter}
+        {(correct || isGameLost) && letter}
       </span>
     );
   });
@@ -112,8 +110,14 @@ export default function App() {
     }
   }
 
+  function newGamme() {
+    setCurrentWord(getRandomWord().toUpperCase());
+    setGuessLetter([]);
+  }
+
   return (
     <main>
+      {isGameWon && <Confetti recycle={false} numberOfPieces={1000} />}
       <header className="mb-8 text-center">
         <h1 className="mb-2 text-2xl font-medium text-[#F9F4DA]">
           Assembly: Endgame
@@ -169,7 +173,10 @@ export default function App() {
       </section>
 
       {isGameOver && (
-        <button className="mx-auto block w-50 cursor-pointer rounded border border-[#D7D7D7] bg-[#11B5E5] px-1.5 py-3">
+        <button
+          onClick={newGamme}
+          className="mx-auto block w-50 cursor-pointer rounded border border-[#D7D7D7] bg-[#11B5E5] px-1.5 py-3"
+        >
           New Game
         </button>
       )}
