@@ -1,0 +1,17 @@
+[
+  {
+    "value": 10,
+    "label": "10",
+    "option": "number"
+  },
+  {
+    "value": 20,
+    "label": "20",
+    "option": "number"
+  },
+  {
+    "value": 30,
+    "label": "30",
+    "option": "number"
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "value": "multiple",
+    "label": "Multiple",
+    "option": "type"
+  },
+  {
+    "value": "boolean",
+    "label": "Boolean",
+    "option": "type"
+  }
+]

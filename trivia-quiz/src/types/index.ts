@@ -7,6 +7,17 @@ export type TriviaQuestion = {
   type: string;
 };
 
+export type Data = {
+  value: number | string;
+  label: string;
+  option: string;
+};
+
 export type TriviaQuestionProps = {
   question: TriviaQuestion;
+};
+
+export type ButtonProps = {
+  props: Data;
+  onSelect: (id: number | string, option: string) => void;
 };

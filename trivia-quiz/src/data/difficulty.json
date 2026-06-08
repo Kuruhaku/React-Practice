@@ -1,0 +1,17 @@
+[
+  {
+    "value": "easy",
+    "label": "Easy",
+    "option": "difficulty"
+  },
+  {
+    "value": "medium",
+    "label": "Medium",
+    "option": "difficulty"
+  },
+  {
+    "value": "hard",
+    "label": "Hard",
+    "option": "difficulty"
+  }
+]
