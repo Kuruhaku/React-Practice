@@ -7,17 +7,32 @@ export type TriviaQuestion = {
   type: string;
 };
 
+export type QuizOption = {
+  category: number;
+  number: number;
+  type: string;
+};
+
 export type Data = {
+  id: number;
   value: number | string;
   label: string;
-  option: string;
+  option: keyof QuizOption;
 };
 
 export type TriviaQuestionProps = {
   question: TriviaQuestion;
 };
 
+export type OptionGroupProps = {
+  title: string;
+  props: Data[];
+  isSelected: { category: number; number: number; type: string };
+  onSelect: (value: number | string, option: keyof QuizOption) => void;
+};
+
 export type ButtonProps = {
   props: Data;
-  onSelect: (id: number | string, option: string) => void;
+  onSelect: (value: number | string, option: keyof QuizOption) => void;
+  isSelected: { category: number; number: number; type: string };
 };

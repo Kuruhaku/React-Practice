@@ -1,15 +1,18 @@
 [
   {
+    "id": 1,
     "value": "easy",
     "label": "Easy",
     "option": "difficulty"
   },
   {
+    "id": 2,
     "value": "medium",
     "label": "Medium",
     "option": "difficulty"
   },
   {
+    "id": 3,
     "value": "hard",
     "label": "Hard",
     "option": "difficulty"

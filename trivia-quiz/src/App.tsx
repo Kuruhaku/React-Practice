@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import QuestionCard from "./components/QuestionCard";
-import CategoryButton from "./components/CategoryButton";
-import categoriesData from "./data/categoriesData.json";
-import numberQuestionData from "./data/numberQuestion.json";
-import questionTypeData from "./data/questionType.json";
+import OptionSection from "./components/OptionSection";
+import { categories, numberQuestion, questionType } from "./data/OptionData";
 import type { TriviaQuestion } from "./types";
 
 export default function App() {
@@ -29,31 +27,10 @@ export default function App() {
     <QuestionCard key={index} question={question} />
   ));
 
-  const categoryButtons = categoriesData.map((category, index) => (
-    <CategoryButton
-      key={index}
-      props={category}
-      onSelect={handleCategorySelect}
-    />
-  ));
-
-  const numberButton = numberQuestionData.map((number, index) => (
-    <CategoryButton
-      key={index}
-      props={number}
-      onSelect={handleCategorySelect}
-    />
-  ));
-
-  const questionTypeButton = questionTypeData.map((type, index) => (
-    <CategoryButton key={index} props={type} onSelect={handleCategorySelect} />
-  ));
-
   console.log(quizOption);
 
   useEffect(() => {
     if (!gameStarted) return;
-    // &difficulty=${difficulty}
     const url = `https://opentdb.com/api.php?amount=${number}&category=${category}&type=${type}`;
     const fetchData = async () => {
       const response = await fetch(url);
@@ -67,23 +44,50 @@ export default function App() {
 
   return (
     <>
-      <main>
-        <section className="starting-page">
-          {!gameStarted && (
-            <>
-              <h1>Quizzical</h1>
-              <p>Let's get quizzical</p>
-              {categoryButtons}
-              {numberButton}
-              {questionTypeButton}
-              <div>
-                <button onClick={handleStartGame}>Start Game</button>
-              </div>
-            </>
-          )}
-        </section>
-        <section>{gameStarted && renderedQuestions}</section>
-      </main>
+      <div className="m-auto max-w-210 items-center justify-center p-4">
+        <main className="my-4 flex flex-col items-center justify-center">
+          <section className="starting-page">
+            {!gameStarted && (
+              <>
+                <h1 className="mb-2 text-center text-3xl leading-[1.17] font-bold text-[#7132f5]">
+                  Quizzical
+                </h1>
+                <p className="mb-2 text-center text-xs">Let's get quizzical</p>
+                <OptionSection
+                  title="Category"
+                  props={categories}
+                  isSelected={quizOption}
+                  onSelect={handleCategorySelect}
+                />
+
+                <OptionSection
+                  title="Number of Question"
+                  props={numberQuestion}
+                  isSelected={quizOption}
+                  onSelect={handleCategorySelect}
+                />
+
+                <OptionSection
+                  title="Type"
+                  props={questionType}
+                  isSelected={quizOption}
+                  onSelect={handleCategorySelect}
+                />
+
+                <div className="mt-7 flex justify-center">
+                  <button
+                    onClick={handleStartGame}
+                    className="w-50 rounded-2xl bg-[#855bfb29] p-2"
+                  >
+                    Start Game
+                  </button>
+                </div>
+              </>
+            )}
+          </section>
+          <section>{gameStarted && renderedQuestions}</section>
+        </main>
+      </div>
     </>
   );
 }

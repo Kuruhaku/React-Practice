@@ -1,10 +1,12 @@
 [
   {
+    "id": 1,
     "value": "multiple",
     "label": "Multiple",
     "option": "type"
   },
   {
+    "id": 2,
     "value": "boolean",
     "label": "Boolean",
     "option": "type"
