@@ -5,6 +5,7 @@ export type TriviaQuestion = {
   question: string;
   incorrect_answers: string[];
   type: string;
+  id: string;
 };
 
 export type QuizOption = {
@@ -22,6 +23,8 @@ export type Data = {
 
 export type TriviaQuestionProps = {
   question: TriviaQuestion;
+  number: number;
+  isChecked: boolean;
 };
 
 export type OptionGroupProps = {

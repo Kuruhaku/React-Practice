@@ -1,10 +1,6 @@
 import type { ButtonProps } from "../types";
 
-export default function OptionButton({
-  props,
-  onSelect,
-  isSelected,
-}: ButtonProps) {
+export default function OptionButton({ props, onSelect, isSelected }: ButtonProps) {
   return (
     <>
       <button
