@@ -17,12 +17,10 @@ function shuffleArray(arr: string[]) {
   return newArray;
 }
 
-export default function QuestionCard({ question, number, isChecked }: TriviaQuestionProps) {
-  const { incorrect_answers, correct_answer } = question;
+export default function QuestionCard({ question, number, isChecked, handleSelectedAnswer }: TriviaQuestionProps) {
+  const { incorrect_answers, correct_answer, selectAnswer } = question;
   const choices = [correct_answer, ...incorrect_answers];
-  const [selectAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [shuffleQuestion] = useState<string[]>(shuffleArray(choices));
-  console.log(question.correct_answer);
 
   const choicesButton = shuffleQuestion.map((button, index) => {
     const isSelectedBeforeCheck = selectAnswer === button && !isChecked;
@@ -34,7 +32,7 @@ export default function QuestionCard({ question, number, isChecked }: TriviaQues
 
     return (
       <button
-        onClick={() => setSelectedAnswer(button)}
+        onClick={() => handleSelectedAnswer(button)}
         key={index}
         className={clsx(`rounded-xl border p-3 text-xs`, {
           "bg-[#855bfb29] text-[#7132f5]": isSelectedBeforeCheck,

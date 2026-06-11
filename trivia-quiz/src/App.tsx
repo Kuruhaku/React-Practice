@@ -6,15 +6,14 @@ import type { TriviaQuestion } from "./types";
 import { nanoid } from "nanoid";
 
 // TODO: Add a rate limiter
-// ADD: A score counter
-// ADD: Error Handling when failed.
-// ADD: A loading to wait all resouces is ready and show it.
+// TODO: A loading to wait all resouces is ready and show it.
 
 export default function App() {
   const [questions, setQuestion] = useState<TriviaQuestion[]>([]);
   const [gameStarted, setGameStarted] = useState(false);
   const [isChecked, setisChecked] = useState(false);
   const [isPlayAgain, setIsPlayAgain] = useState(false);
+  const [totalScore, setTotalScore] = useState(0);
   const [quizOption, setQuizOption] = useState({
     category: 9,
     number: 10,
@@ -23,6 +22,13 @@ export default function App() {
 
   const { category, number, type } = quizOption;
   console.log(quizOption);
+
+  function handleSelectedAnswer(questionsID: string, answer: string) {
+    console.log(questionsID);
+    console.log(answer);
+    if (isChecked) return;
+    setQuestion((prevQuestion) => prevQuestion.map((q) => (q.id === questionsID ? { ...q, selectAnswer: answer } : q)));
+  }
 
   function handleGameMenu() {
     setisChecked(false);
@@ -36,11 +42,19 @@ export default function App() {
 
   function handleCheckedAnswer() {
     setisChecked(true);
+
+    const finalScore = questions.reduce((score, q) => {
+      return q.selectAnswer === q.correct_answer ? score + 1 : score;
+    }, 0);
+
+    setTotalScore(finalScore);
   }
 
   function handlePlayAgain() {
+    setTotalScore(0);
     setIsPlayAgain((prev) => !prev);
     setisChecked(false);
+    setQuestion([]);
   }
 
   function handleCategorySelect(value: number | string, option: string) {
@@ -48,16 +62,28 @@ export default function App() {
   }
 
   const renderedQuestions = questions.map((question, index) => {
-    return <QuestionCard key={question.id} number={index + 1} question={question} isChecked={isChecked} />;
+    return (
+      <QuestionCard
+        key={question.id}
+        number={index + 1}
+        question={question}
+        isChecked={isChecked}
+        handleSelectedAnswer={(ans) => handleSelectedAnswer(question.id, ans)}
+      />
+    );
   });
 
   useEffect(() => {
     if (!gameStarted) return;
     const url = `https://opentdb.com/api.php?amount=${number}&category=${category}&type=${type}`;
     const fetchData = async () => {
-      const response = await fetch(url);
-      const data = await response.json();
-      setQuestion(data.results.map((q: TriviaQuestion) => ({ ...q, id: nanoid() })));
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        setQuestion(data.results.map((q: TriviaQuestion) => ({ ...q, id: nanoid() })));
+      } catch (error) {
+        console.log(`Error Occurred: ${error}`);
+      }
     };
 
     fetchData();
@@ -106,7 +132,12 @@ export default function App() {
               <>
                 {renderedQuestions}
                 {isChecked ? (
-                  <div className="mt-7 flex justify-center gap-5">
+                  <div className="mt-7 flex items-center justify-center gap-5">
+                    <div>
+                      <p>
+                        You Scored: {totalScore} / {quizOption.number} correct Answer
+                      </p>
+                    </div>
                     <button onClick={() => handlePlayAgain()} className="w-50 rounded-2xl bg-[#855bfb29] p-2">
                       Play Again
                     </button>
