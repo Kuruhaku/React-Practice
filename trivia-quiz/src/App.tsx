@@ -7,6 +7,7 @@ import { nanoid } from "nanoid";
 
 // TODO: Add a rate limiter
 // TODO: A loading to wait all resouces is ready and show it.
+// TODO: Maybe add something to made accessible for screen reader.
 
 export default function App() {
   const [questions, setQuestion] = useState<TriviaQuestion[]>([]);

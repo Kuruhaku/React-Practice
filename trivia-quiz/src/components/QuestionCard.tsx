@@ -37,9 +37,9 @@ export default function QuestionCard({ question, number, isChecked, handleSelect
         className={clsx(`rounded-xl border p-3 text-xs`, {
           "bg-[#855bfb29] text-[#7132f5]": isSelectedBeforeCheck,
           "border-[#2a2c34]": isUnrevealedChoice,
-          "pointer-events-none border-[#dc2626]": isWrongSelection,
-          "pointer-events-none border-green-400": isCorrectSelection,
-          "pointer-events-none border-blue-500": isCorrectAnswer,
+          "pointer-events-none border-[#dc2626] bg-[#fee2e2] text-[#991b1b]": isWrongSelection,
+          "pointer-events-none border-[#22c55e] bg-[#dcfce7] text-[#166534]": isCorrectSelection,
+          "pointer-events-none border-[#3b82f6] bg-[#dbeafe] text-[#1e40af]": isCorrectAnswer,
           "pointer-events-none border-[#2a2c34]": isUnselectedAfterCheck,
         })}
       >
