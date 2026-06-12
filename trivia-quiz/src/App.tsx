@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
+// import { useQuery } from "@tanstack/react-query";
 import QuestionCard from "./components/QuestionCard";
 import OptionSection from "./components/OptionSection";
 import { categories, numberQuestion, questionType } from "./data/OptionData";
 import type { TriviaQuestion } from "./types";
 import { nanoid } from "nanoid";
 
-// TODO: A loading to wait all resouces is ready and show it.
-// TODO: Maybe add something to made accessible for screen reader.
+// Improvement: useQuery for data fetching and caching. Or use content loader
+// Improvement: Maybe add something to made accessible for screen reader.
 
 export default function App() {
   const [questions, setQuestion] = useState<TriviaQuestion[]>([]);
@@ -15,6 +16,7 @@ export default function App() {
   const [isPlayAgain, setIsPlayAgain] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
   const [rateLimit, setRateLimit] = useState(10);
+  const [isLoading, setIsLoading] = useState(false);
   const [quizOption, setQuizOption] = useState({
     category: 9,
     number: 10,
@@ -80,12 +82,15 @@ export default function App() {
 
     const url = `https://opentdb.com/api.php?amount=${number}&category=${category}&type=${type}`;
     const fetchData = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch(url);
         const data = await response.json();
         setQuestion(data.results.map((q: TriviaQuestion) => ({ ...q, id: nanoid() })));
       } catch (error) {
         console.log(`Error Occurred: ${error}`);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -147,7 +152,7 @@ export default function App() {
           <section>
             {gameStarted && (
               <>
-                {renderedQuestions}
+                {isLoading ? <div className="h-10 w-200 animate-pulse bg-gray-700"></div> : renderedQuestions}
                 {isChecked ? (
                   <div className="mt-7 flex items-center justify-center gap-5">
                     <div>
