@@ -5,7 +5,6 @@ import { categories, numberQuestion, questionType } from "./data/OptionData";
 import type { TriviaQuestion } from "./types";
 import { nanoid } from "nanoid";
 
-// TODO: Add a rate limiter
 // TODO: A loading to wait all resouces is ready and show it.
 // TODO: Maybe add something to made accessible for screen reader.
 
@@ -15,6 +14,7 @@ export default function App() {
   const [isChecked, setisChecked] = useState(false);
   const [isPlayAgain, setIsPlayAgain] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
+  const [rateLimit, setRateLimit] = useState(10);
   const [quizOption, setQuizOption] = useState({
     category: 9,
     number: 10,
@@ -22,11 +22,11 @@ export default function App() {
   });
 
   const { category, number, type } = quizOption;
-  console.log(quizOption);
+  const isRateLimitOn = rateLimit != null && rateLimit > 0;
 
   function handleSelectedAnswer(questionsID: string, answer: string) {
-    console.log(questionsID);
-    console.log(answer);
+    // console.log(questionsID);
+    // console.log(answer);
     if (isChecked) return;
     setQuestion((prevQuestion) => prevQuestion.map((q) => (q.id === questionsID ? { ...q, selectAnswer: answer } : q)));
   }
@@ -56,6 +56,7 @@ export default function App() {
     setIsPlayAgain((prev) => !prev);
     setisChecked(false);
     setQuestion([]);
+    setRateLimit(5);
   }
 
   function handleCategorySelect(value: number | string, option: string) {
@@ -76,6 +77,7 @@ export default function App() {
 
   useEffect(() => {
     if (!gameStarted) return;
+
     const url = `https://opentdb.com/api.php?amount=${number}&category=${category}&type=${type}`;
     const fetchData = async () => {
       try {
@@ -89,6 +91,20 @@ export default function App() {
 
     fetchData();
   }, [gameStarted, isPlayAgain, number, category, type]);
+
+  useEffect(() => {
+    if (!isChecked && rateLimit === null) {
+      return;
+    }
+
+    const timeoutID = window.setTimeout(() => {
+      if (isChecked && rateLimit > 0) {
+        setRateLimit(rateLimit - 1);
+      }
+    }, 1000);
+
+    return () => window.clearTimeout(timeoutID);
+  }, [isChecked, rateLimit]);
 
   return (
     <>
@@ -139,8 +155,12 @@ export default function App() {
                         You Scored: {totalScore} / {quizOption.number} correct Answer
                       </p>
                     </div>
-                    <button onClick={() => handlePlayAgain()} className="w-50 rounded-2xl bg-[#855bfb29] p-2">
-                      Play Again
+                    <button
+                      onClick={() => handlePlayAgain()}
+                      disabled={isRateLimitOn}
+                      className={`w-50 rounded-2xl p-2 ${isRateLimitOn ? "border bg-[#855bfb10]" : "bg-[#855bfb29]"}`}
+                    >
+                      Play Again {isRateLimitOn && rateLimit}
                     </button>
                     <button onClick={() => handleGameMenu()} className="w-50 rounded-2xl bg-[#855bfb29] p-2">
                       Game Menu
