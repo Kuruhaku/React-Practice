@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@import "tailwindcss";
+
+:root {
+  font-family: "Inter", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  color-scheme: light dark;
+  color: black;
+  background-color: white;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+h2 {
+  letter-spacing: -0.7px;
+  font-weight: 400;
+  color: #082c1b;
+  margin: 0;
+  padding: 1rem;
+}
+
+h1 {
+  letter-spacing: -0.7px;
+  font-weight: 600;
+  color: white;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+}
+
+header {
+  background-color: #134e32;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem 0;
+  height: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+button {
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+}
+
+form button {
+  padding: 4px 8px;
+  background-color: #124f33;
+  color: rgb(255, 255, 255);
+  width: 100px;
+  transition: background-color 0.2s ease;
+}
+
+form button:hover {
+  background-color: #187c49;
+}
+
+form button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+select {
+  border-radius: 5px;
+  margin-left: 5px;
+  background-color: #ffffff;
+  color: black;
+  border: 1px solid grey;
+}
