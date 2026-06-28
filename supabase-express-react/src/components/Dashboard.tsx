@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { Chart } from "react-charts";
-// import Form from "./Form";
+import Form from "./Form";
 import type { SalesChartDatum, Metric } from "../types";
 
 export default function DashBoard() {
+  const [metric, setMetric] = useState<Metric[]>([]);
+
+  useEffect(() => {
+    fetchMetrics();
+  }, []);
+
   async function fetchMetrics() {
     try {
-      const response = await fetch("http://localhost:8000/sales");
+      const response = await fetch("http://localhost:8000/sale");
       const data = await response.json();
       setMetric(data);
     } catch (error) {
       console.log(`Data Fetching Error: ${error}`);
     }
   }
-
-  const [metric, setMetric] = useState<Metric[]>([]);
-
-  useEffect(() => {
-    fetchMetrics();
-  }, []);
 
   const primaryAxis = {
     getValue: (d: SalesChartDatum) => d.primary,
@@ -73,6 +73,7 @@ export default function DashBoard() {
             }}
           />
         </div>
+        <Form metric={metric} />
       </div>
     </div>
   );

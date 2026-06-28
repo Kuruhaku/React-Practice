@@ -12,6 +12,11 @@ export type MetricProps = {
   metric: Metric[];
 };
 
+export type Deals = {
+  name: string;
+  value: string;
+};
+
 // export type previousStateType = {
 //   error: string | null;
 //   success: boolean;
