@@ -3,12 +3,13 @@ import type { MetricProps } from "../types";
 import supabase from "../supabase-client";
 
 export default function Form({ metric }: MetricProps) {
-  const [error, submitAction, isPending] = useActionState(async (previousState, formData: FormData) => {
+  const [error, submitAction, isPending] = useActionState(async (previousState: Error | null, formData: FormData) => {
     console.log(formData);
     const newDeal = {
       name: formData.get("name"),
       value: formData.get("value"),
     };
+    console.log(previousState);
     console.log(newDeal);
 
     const { error } = await supabase.from("sales_deals").insert(newDeal);
@@ -60,7 +61,12 @@ export default function Form({ metric }: MetricProps) {
           />
         </label>
 
-        <button type="submit" disabled={isPending} aria-busy={isPending}>
+        <button
+          className="w-full cursor-pointer rounded-md border-none bg-[#124f33] px-2 py-1 text-white hover:bg-[#187c49] disabled:cursor-not-allowed disabled:bg-[#6c757d]"
+          type="submit"
+          disabled={isPending}
+          aria-busy={isPending}
+        >
           Add Deal
         </button>
       </form>
