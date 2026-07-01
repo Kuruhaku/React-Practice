@@ -68,3 +68,31 @@ select {
   color: black;
   border: 1px solid grey;
 }
+
+.form-link {
+  color: #187c49;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  padding-bottom: 1px;
+  border-bottom: 1px solid transparent;
+}
+
+.form-link:hover {
+  color: #124f33;
+}
+
+.header-email button {
+  display: inline-block;
+  padding: 0.2rem 0.4rem; /* new */
+  margin-top: 0;
+  border: 0.5px solid rgba(255, 255, 255, 0.8); /* new */
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #134e32; /* new */
+  color: rgba(255, 255, 255, 0.8); /* new */
+  font-size: 0.8rem; /* new */
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
