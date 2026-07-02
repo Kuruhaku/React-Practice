@@ -31,7 +31,7 @@ export default function Form({ metric }: MetricProps) {
   };
 
   return (
-    <div className="add-form-container mx-auto mt-15 mb-1.75 w-[90%] shrink-0 rounded-md border p-2">
+    <div className="add-form-container mx-auto mt-7 mb-4 w-[90%] shrink-0 rounded-md border p-2">
       <form action={submitAction} className="m-1.5 flex items-center justify-center gap-10">
         <div id="form-descirption" className="sr-only">
           Use this form to add a new sales deal. Select a sales rep and enter the amount

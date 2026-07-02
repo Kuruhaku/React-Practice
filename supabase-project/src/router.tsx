@@ -1,12 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
 import SignIn from "./components/SignIn";
-import Header from "./components/Header";
-import DashBoard from "./routes/Dashboard";
 import Signup from "./components/Signup";
+import RootRedirect from "./routes/RootRedirect";
+import ProtectDashBoard from "./routes/ProtectDashboard";
 
 export const router = createBrowserRouter([
   {
     path: "/",
+    element: <RootRedirect />,
+  },
+  {
+    path: "/signin",
     element: <SignIn />,
   },
   {
@@ -15,11 +19,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: (
-      <>
-        <Header />
-        <DashBoard />
-      </>
-    ),
+    element: <ProtectDashBoard />,
   },
 ]);

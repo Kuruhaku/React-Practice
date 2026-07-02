@@ -5,10 +5,9 @@ type children = {
   children: React.JSX.Element;
 };
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }: children) => {
-  //
   const [session, setSession] = useState<unknown | null>(null);
 
   useEffect(() => {
@@ -68,7 +67,26 @@ export const AuthContextProvider = ({ children }: children) => {
     }
   };
 
-  return <AuthContext.Provider value={{ session, signInUser, signOutUser }}>{children}</AuthContext.Provider>;
+  const signUpNewUser = async (email: string, password: string) => {
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: email.toLowerCase(),
+        password: password,
+      });
+
+      if (error) {
+        console.error(`Supabase sign-up error: ${error.message}`);
+        return { success: false, error: error.message };
+      }
+
+      return { success: true, data: data };
+    } catch (error) {
+      console.error(`Unexpected error during sign-up new user: ${error}`);
+      return { success: false, error: error };
+    }
+  };
+
+  return <AuthContext.Provider value={{ session, signInUser, signOutUser, signUpNewUser }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

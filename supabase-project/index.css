@@ -21,27 +21,24 @@ select {
   font-family: inherit;
 }
 
-header h2 {
-  letter-spacing: -0.7px;
+h2 {
+  letter-spacing: -0.7px; /* Extra tightening for headings */
   font-weight: 400;
-  color: #082c1b;
-  margin: 0;
-  padding: 1rem;
 }
 
 header {
   background-color: #134e32;
   width: 100vw;
+  box-sizing: border-box; /* new */
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  padding: 2rem 0;
-  height: 2rem;
+  padding: 0.4rem; /* new */
+  height: 7rem; /* new */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
@@ -83,6 +80,26 @@ select {
   color: #124f33;
 }
 
+.header-email {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 0;
+}
+
+.header-email h2 {
+  margin: 0;
+  font-size: 0.8rem; /* new */
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+  letter-spacing: 0px;
+}
+
+.header-email .account-type {
+  margin-left: 2rem;
+}
+
 .header-email button {
   display: inline-block;
   padding: 0.2rem 0.4rem; /* new */
@@ -95,4 +112,23 @@ select {
   font-size: 0.8rem; /* new */
   font-weight: 500;
   transition: all 0.2s ease;
+}
+
+.header-email button:hover {
+  background-color: #124f33; /* new */
+  border-color: #f0f0f0;
+  transform: translateY(-1px);
+}
+
+.header-email button:active {
+  transform: translateY(0);
+  background-color: #e0e0e0;
+  border-color: #e0e0e0;
+}
+
+.header-email .error-message {
+  color: red;
+  text-align: center;
+  margin: 0;
+  font-size: 1rem;
 }

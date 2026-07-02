@@ -4,6 +4,8 @@ import { router } from "./router";
 import { AuthContextProvider } from "./context/AuthContext";
 
 // Learned: Know how to setup supabase, cliene library, fetching data using const [data, error] = await supabase.from(table).inset() or .select(), setting up realtime using supabase.channel.on(postgres_changes), and inserting data and reflect it.
+// Noted: Check more about useContext.
+
 createRoot(document.getElementById("root")!).render(
   <AuthContextProvider>
     <RouterProvider router={router} />

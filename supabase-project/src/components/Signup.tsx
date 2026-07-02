@@ -1,13 +1,39 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { useActionState } from "react";
 
 export default function Signup() {
+  const { signUpNewUser } = useAuth();
+  const navigate = useNavigate();
+
+  const [error, submitAction, isPending] = useActionState(async (previousState: void | null, formData: FormData) => {
+    const email = formData.get("email");
+    const password = formData.get("password");
+    console.log(email);
+    console.log(password);
+    console.log(previousState);
+
+    const { success, data, error: signInError } = await signUpNewUser(email, password);
+
+    if (signInError) {
+      console.log(error);
+    }
+
+    if (success && data?.session) {
+      navigate("/dashboard");
+      return null;
+    }
+
+    return null;
+  }, null);
+
   return (
     <>
       <h1 className="landing-header bg-linear-[45deg, #082c1b, #0dc566] mt-0 mb-3 bg-clip-text p-4 text-center text-6xl leading-[1.2] font-bold tracking-wide text-[#082c1b]">
         Paper Like A Boss
       </h1>
       <div className="sign-form-container bordder mx-auto my-0 max-w-md transform rounded-md bg-white p-10 shadow-[0_4px_6px_rgba(0,0,0,0.05)] duration-75 ease-in">
-        <form aria-label="Sign in form" aria-describedby="form-description">
+        <form action={submitAction} aria-label="Sign in form" aria-describedby="form-description">
           <div id="form-description" className="sr-only">
             <p>Use This form to create a new account. Enter your email and password</p>
           </div>
@@ -29,6 +55,7 @@ export default function Signup() {
             placeholder=""
             required
             aria-required="true"
+            disabled={isPending}
           />
 
           <label htmlFor="password">Password</label>
@@ -40,6 +67,7 @@ export default function Signup() {
             placeholder=""
             required
             aria-required="true"
+            disabled={isPending}
           />
 
           <button
@@ -48,6 +76,12 @@ export default function Signup() {
           >
             Sign In
           </button>
+
+          {error && (
+            <div className="" role="alert" id="signin-error">
+              {error}
+            </div>
+          )}
         </form>
       </div>
     </>

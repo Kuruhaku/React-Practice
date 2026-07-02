@@ -85,7 +85,7 @@ export default function DashBoard() {
 
   return (
     <div className="dashboard-wrapper m-0 flex h-screen flex-col">
-      <div className="chart-container rounded-m relative mx-auto mt-26 mb-1.75 flex h-[65vh] w-[90%] grow flex-col overflow-hidden border bg-[#f9f9f9] px-2.5 pb-5">
+      <div className="chart-container rounded-m relative mx-auto mt-35 mb-1.75 flex h-[65vh] w-[90%] grow flex-col overflow-hidden border bg-[#f9f9f9] px-2.5 pb-5">
         <h2>Total Sales This Quarter</h2>
         <div style={{ flex: 1 }}>
           <Chart

@@ -1,24 +1,28 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const { signOutUser } = useAuth();
+  const { signOutUser, session } = useAuth();
+  const navigate = useNavigate();
   const [error, setError] = useState(null);
 
-  const handleSignOut = async (e: any) => {
+  const handleSignOut = async (e) => {
     e.preventDefault();
 
     const { success, error } = await signOutUser();
     if (success) {
-      console.log("Logout Successful");
+      navigate("/signin");
+      window.alert("User has been successfully log out");
     } else {
       setError(error.message);
     }
   };
 
   return (
-    <header>
+    <header role="banner" aria-label="Dashboard Header">
       <div className="header-email" aria-label="User Aaccount Navigation">
+        <span> {session?.user?.email}</span>
         <button onClick={handleSignOut}>Sign Out</button>
         {error && (
           <div className="error-message" id="signout-error">
