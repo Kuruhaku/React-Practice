@@ -67,18 +67,29 @@ export const AuthContextProvider = ({ children }: children) => {
     }
   };
 
-  const signUpNewUser = async (email: string, password: string) => {
+  const signUpNewUser = async (email: string, password: string, name: string, accountType: string) => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email: email.toLowerCase(),
         password: password,
+        options: {
+          data: {
+            name: name,
+            account_type: accountType,
+          },
+        },
       });
 
       if (error) {
-        console.error(`Supabase sign-up error: ${error.message}`);
-        return { success: false, error: error.message };
+        console.error("Supabase sign-up error:", {
+          message: error.message,
+          status: error.status,
+          name: error.name,
+          code: (error as any).code, // some AuthError variants include this
+        });
+        return { data: null, error };
       }
-
+      // return { success: false, error: error.message };
       return { success: true, data: data };
     } catch (error) {
       console.error(`Unexpected error during sign-up new user: ${error}`);

@@ -132,3 +132,74 @@ select {
   margin: 0;
   font-size: 1rem;
 }
+
+.sign-form-container .radio-group {
+  display: flex;
+  justify-content: space-between;
+  /* gap: 1rem; */
+}
+
+.sign-form-container .radio-group label {
+  margin-left: 3.5rem;
+  flex: 1;
+  text-align: center; /* optional: center label text */
+}
+
+.sign-form-container .radio-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sign-form-container .radio-group label {
+  margin-left: 3.5rem;
+  flex: 1;
+  text-align: center; /* optional: center label text */
+  align-items: center;
+}
+
+/* default styling for input radio button when no checked */
+.sign-form-container .radio-group input:not(:checked) {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  cursor: pointer;
+}
+
+.sign-form-container .radio-group input {
+  margin-right: 0.5rem;
+  margin-top: 0;
+  accent-color: blue;
+  width: 16px;
+  height: 16px;
+}
+
+.sign-form-container fieldset {
+  border: 1.5px solid #e4e4e4;
+  border-radius: 5px;
+  padding: 0.6rem;
+}
+
+.sign-form-container .radio-group input:not(:checked) {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  cursor: pointer;
+}
+
+.sign-form-container .radio-group input {
+  margin-right: 0.5rem;
+  margin-top: 0;
+  accent-color: blue;
+  width: 16px;
+  height: 16px;
+}

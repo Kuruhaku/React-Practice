@@ -7,13 +7,17 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const [error, submitAction, isPending] = useActionState(async (previousState: void | null, formData: FormData) => {
+    const name = formData.get("name");
     const email = formData.get("email");
     const password = formData.get("password");
+    const accountType = formData.get("account-type");
+    console.log(name);
     console.log(email);
     console.log(password);
+    console.log(accountType);
     console.log(previousState);
 
-    const { success, data, error: signInError } = await signUpNewUser(email, password);
+    const { success, data, error: signInError } = await signUpNewUser(email, password, name, accountType);
 
     if (signInError) {
       console.log(error);
@@ -46,6 +50,18 @@ export default function Signup() {
             </Link>
           </div>
 
+          <label htmlFor="name">Name</label>
+          <input
+            className="mx-0 my-4 box-border w-full rounded border bg-white p-3.5 text-base font-normal text-[#082c1b] focus:border-[#124f33] focus:shadow-[0_0_0_3px_rgba(18,79,51,0.1)] focus:outline-none"
+            type="text"
+            name="name"
+            id="name"
+            placeholder=""
+            required
+            aria-required="true"
+            disabled={isPending}
+          />
+
           <label htmlFor="email">Email</label>
           <input
             className="mx-0 my-4 box-border w-full rounded border bg-white p-3.5 text-base font-normal text-[#082c1b] focus:border-[#124f33] focus:shadow-[0_0_0_3px_rgba(18,79,51,0.1)] focus:outline-none"
@@ -69,6 +85,21 @@ export default function Signup() {
             aria-required="true"
             disabled={isPending}
           />
+
+          <fieldset className="form-fieldset">
+            <legend>Select Your role</legend>
+            <div className="radio-group">
+              <label>
+                <input type="radio" name="account-type" value="admin" required></input>
+                Admin
+              </label>
+
+              <label>
+                <input type="radio" name="account-type" value="rep" required></input>
+                Sales Rep
+              </label>
+            </div>
+          </fieldset>
 
           <button
             className="form-button mt-6 w-full cursor-pointer rounded-md border-none bg-[#124f33] px-5 py-3 text-base font-semibold text-white hover:-translate-y-0.5 hover:bg-[#187c49] disabled:transform-none disabled:cursor-not-allowed disabled:bg-[#6c757d] disabled:opacity-50"
