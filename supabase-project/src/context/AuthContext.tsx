@@ -1,14 +1,13 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import supabase from "../supabase-client";
+import type { Session } from "@supabase/supabase-js";
+import type { children, userData, AuthContextType } from "../types";
 
-type children = {
-  children: React.JSX.Element;
-};
-
-const AuthContext = createContext();
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthContextProvider = ({ children }: children) => {
-  const [session, setSession] = useState<unknown | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [users, setUser] = useState<userData[]>([]);
 
   useEffect(() => {
     async function getInitialSession() {
@@ -29,10 +28,30 @@ export const AuthContextProvider = ({ children }: children) => {
     getInitialSession();
 
     supabase.auth.onAuthStateChange((event, session) => {
+      console.log(event);
       setSession(session);
       console.log(`Session Change:`, session);
     });
   }, []);
+
+  useEffect(() => {
+    if (!session) return;
+
+    async function fetchUsers() {
+      try {
+        const { data, error } = await supabase.from("user_profiles").select(`id, name, account_type`);
+
+        if (error) throw error;
+
+        console.log(data);
+        setUser(data);
+      } catch (error) {
+        console.error(`Data Fetching Error: ${error}`);
+      }
+    }
+
+    fetchUsers();
+  }, [session]);
 
   const signInUser = async (email: string, password: string) => {
     try {
@@ -81,12 +100,7 @@ export const AuthContextProvider = ({ children }: children) => {
       });
 
       if (error) {
-        console.error("Supabase sign-up error:", {
-          message: error.message,
-          status: error.status,
-          name: error.name,
-          code: (error as any).code, // some AuthError variants include this
-        });
+        console.error("Supabase sign-up error:", { message: error.message });
         return { data: null, error };
       }
       // return { success: false, error: error.message };
@@ -97,9 +111,14 @@ export const AuthContextProvider = ({ children }: children) => {
     }
   };
 
-  return <AuthContext.Provider value={{ session, signInUser, signOutUser, signUpNewUser }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ session, signInUser, signOutUser, signUpNewUser, users }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthContextProvider");
+  }
+
+  return context;
 };

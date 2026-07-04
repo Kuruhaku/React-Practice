@@ -99,7 +99,7 @@ export default function DashBoard() {
           />
         </div>
       </div>
-      <Form metric={metric} />
+      <Form />
     </div>
   );
 }

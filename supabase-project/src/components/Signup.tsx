@@ -7,10 +7,10 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const [error, submitAction, isPending] = useActionState(async (previousState: void | null, formData: FormData) => {
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const accountType = formData.get("account-type");
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const accountType = formData.get("account-type") as string;
     console.log(name);
     console.log(email);
     console.log(password);

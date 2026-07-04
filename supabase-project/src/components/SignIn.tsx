@@ -7,8 +7,8 @@ export default function SignIn() {
   const navigate = useNavigate();
 
   const [error, submitAction, isPending] = useActionState(async (previousState: Error | null, formData: FormData) => {
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
     console.log(email, password);
     console.log(previousState);
 
@@ -83,7 +83,7 @@ export default function SignIn() {
 
           {error && (
             <div className="" role="alert" id="signin-error">
-              {error.message}
+              {error}
             </div>
           )}
         </form>

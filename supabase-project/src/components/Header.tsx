@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function Header() {
   const { signOutUser, session } = useAuth();
   const navigate = useNavigate();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const handleSignOut = async (e) => {
     e.preventDefault();
@@ -15,7 +15,7 @@ export default function Header() {
       navigate("/signin");
       window.alert("User has been successfully log out");
     } else {
-      setError(error.message);
+      setError(error);
     }
   };
 

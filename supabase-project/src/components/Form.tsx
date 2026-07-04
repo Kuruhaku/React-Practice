@@ -1,12 +1,22 @@
 import { useActionState } from "react";
-import type { MetricProps } from "../types";
+import { useAuth } from "../context/AuthContext";
+import type { userData } from "../types";
 import supabase from "../supabase-client";
 
-export default function Form({ metric }: MetricProps) {
+export default function Form() {
+  const { users, session } = useAuth();
+
   const [error, submitAction, isPending] = useActionState(async (previousState: Error | null, formData: FormData) => {
     console.log(formData);
+    const submittedName = formData.get("name");
+    const user = users.find((u) => u.name === submittedName);
+
+    if (user === undefined) {
+      return new Error("Cannot find submittedName");
+    }
+
     const newDeal = {
-      name: formData.get("name"),
+      user_id: user.id,
       value: formData.get("value"),
     };
     console.log(previousState);
@@ -22,12 +32,16 @@ export default function Form({ metric }: MetricProps) {
     return null;
   }, null);
 
+  const currentUser = users.find((user) => user.id === session?.user?.id);
+
   const generateOption = () => {
-    return metric.map((metric) => (
-      <option key={metric.name} value={metric.name}>
-        {metric.name}
-      </option>
-    ));
+    return users
+      .filter((user) => user.account_type === "rep")
+      .map((user: userData) => (
+        <option key={user.id} value={user.name}>
+          {user.name}
+        </option>
+      ));
   };
 
   return (
@@ -37,12 +51,19 @@ export default function Form({ metric }: MetricProps) {
           Use this form to add a new sales deal. Select a sales rep and enter the amount
         </div>
 
-        <label htmlFor="deal-name">
-          Name:
-          <select id="deal-name" name="name" defaultValue={metric?.[0]?.name || ""} aria-required="true">
-            {generateOption()}
-          </select>
-        </label>
+        {currentUser?.account_type === "rep" ? (
+          <label htmlFor="deal-name">
+            Name:
+            <input id="deal-name" type="text" name="name" value={currentUser?.name || ""} readOnly aria-required="true"></input>
+          </label>
+        ) : (
+          <label htmlFor="deal-name">
+            Name:
+            <select id="deal-name" name="name" defaultValue={users[0].name || ""} aria-required="true">
+              {generateOption()}
+            </select>
+          </label>
+        )}
 
         <label htmlFor="deal-value">
           Amount: $
