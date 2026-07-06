@@ -9,7 +9,6 @@ export default function SignIn() {
   const [error, submitAction, isPending] = useActionState(async (previousState: Error | null, formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    console.log(email, password);
     console.log(previousState);
 
     const { success, data, error: signInError } = await signInUser(email, password);

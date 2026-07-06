@@ -3,9 +3,12 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const { signOutUser, session } = useAuth();
+  const { signOutUser, session, users } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | undefined>(undefined);
+
+  const currentUser = users.find((user) => user.id === session?.user?.id);
+  console.log(currentUser);
 
   const handleSignOut = async (e) => {
     e.preventDefault();
@@ -22,7 +25,8 @@ export default function Header() {
   return (
     <header role="banner" aria-label="Dashboard Header">
       <div className="header-email" aria-label="User Aaccount Navigation">
-        <span> {session?.user?.email}</span>
+        <span> {currentUser?.name}</span>
+        <span> {currentUser?.account_type}</span>
         <button onClick={handleSignOut}>Sign Out</button>
         {error && (
           <div className="error-message" id="signout-error">

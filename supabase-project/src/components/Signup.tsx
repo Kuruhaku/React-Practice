@@ -11,10 +11,6 @@ export default function Signup() {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const accountType = formData.get("account-type") as string;
-    console.log(name);
-    console.log(email);
-    console.log(password);
-    console.log(accountType);
     console.log(previousState);
 
     const { success, data, error: signInError } = await signUpNewUser(email, password, name, accountType);

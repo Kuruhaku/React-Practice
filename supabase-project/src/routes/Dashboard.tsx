@@ -7,11 +7,16 @@ import type { SalesChartDatum, Metric } from "../types";
 export default function DashBoard() {
   async function fetchMetrics() {
     try {
-      const { data, error } = await supabase.from("sales_deals").select(`name, value.sum()`);
+      const { data, error } = await supabase.from("sales_deals").select(
+        `
+        value.sum(),
+        ...user_profiles!inner(name)
+      `,
+      );
 
       if (error) throw error;
 
-      console.log(data);
+      // console.log(data);
       setMetric(data);
     } catch (error) {
       console.log(`Data Fetching Error: ${error}`);

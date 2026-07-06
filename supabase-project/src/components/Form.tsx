@@ -59,7 +59,7 @@ export default function Form() {
         ) : (
           <label htmlFor="deal-name">
             Name:
-            <select id="deal-name" name="name" defaultValue={users[0].name || ""} aria-required="true">
+            <select id="deal-name" name="name" defaultValue={users[0]?.name || ""} aria-required="true">
               {generateOption()}
             </select>
           </label>
